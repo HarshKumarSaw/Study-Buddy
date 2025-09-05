@@ -20,7 +20,7 @@ jobs:
 
       - name: Fetch data from Sheet2API
         run: |
-          curl -s "http://sheet2api.com/v1/srrz521RbqJ8/testing" -o data.json
+          curl -s "https://sheet2api.com/v1/srrz521RbqJ8/testing" -o data.json
 
       - name: Commit changes
         run: |
