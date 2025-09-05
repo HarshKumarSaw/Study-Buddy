@@ -1,0 +1,26 @@
+name: Fetch Sheet2API Data
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # runs daily at midnight UTC
+  workflow_dispatch:       # allows manual trigger anytime
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Fetch data from Sheet2API
+        run: |
+          curl -s "http://sheet2api.com/v1/srrz521RbqJ8/testing" -o data.json
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "HarshKumarSaw"
+          git config --global user.email "harshsaw01@gmail.com"
+          git add data.json
+          git commit -m "Update data.json from Sheet2API" || echo "No changes to commit"
+          git push
