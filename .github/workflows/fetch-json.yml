@@ -3,7 +3,10 @@ name: Fetch Sheet2API Data
 on:
   schedule:
     - cron: "0 0 * * *"   # runs daily at midnight UTC
-  workflow_dispatch:       # allows manual trigger anytime
+  workflow_dispatch:       # allows manual trigger
+
+permissions:
+  contents: write          # <---- this line gives write access to push commits
 
 jobs:
   fetch-and-commit:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # <---- use GitHub’s auto token
 
       - name: Fetch data from Sheet2API
         run: |
@@ -19,8 +24,8 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.name "HarshKumarSaw"
-          git config --global user.email "harshsaw01@gmail.com"
+          git config user.name "HarshKumarSaw"
+          git config user.email "harshsaw01@gmail.com"
           git add data.json
           git commit -m "Update data.json from Sheet2API" || echo "No changes to commit"
           git push
